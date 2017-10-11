@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+  Tictactoe game: {{game.first_player}} vs. {{game.second_player}}
+{% endblock title %}
+
+{% block styling %}
+  {{block.super}}
+  <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+  <style>
+    table {
+      table-layout: fixed;
+    }
+    .tictactoe-cell {
+      height:20px !important;
+      width:20px !important;
+      background-color: #debb27;
+    }
+    #last-move {
+      background-color: #df6e1e;
+    }
+  </style>
+{% endblock styling %}
+
+{% block javascript %}
+  {{block.super}}
+{% endblock javascript %}
+
+{% block content %}
+  <h3>Game: {{game}}</h3>
+  <div class="col-sm-9">
+    <table class="table table-bordered">
+      {% for line in game.as_board %}
+        <tr data-y="{{forloop.counter0}}">
+          {% for square in line %}
+            <td 
+              class="tictactoe-cell {% if not square %}empty{% endif %}"
+              data-x="{{forloop.counter0}}"
+              {% if forloop.parentloop.counter0 == game.last_move.y and foorlop.counter0 == game.last_move.x %}>
+                id="last-move"
+              {% endif %}>
+              {% if square == 'X' %}
+                <span class="fa fa-circle-o"></span>
+              {% elif square == '0' %}
+                <span class="glyphicon glyphicon-remove"></span>
+              {% else %}
+                <span><img src="{% static 'empty.png' %}"></span>
+              {% endif %}
+            </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+
+    {% block moveform %}
+    {% endblock moveform %}
+
+  </div>
+{% endblock content %}
